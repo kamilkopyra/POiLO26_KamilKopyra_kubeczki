@@ -1,6 +1,7 @@
 #pragma once
-
+#include <vector>
 #include "OAutorze.h"
+#include "TCup.h"
 
 namespace POiIOkubeczki {
 
@@ -19,8 +20,9 @@ namespace POiIOkubeczki {
 
 	private:
 		Generic::List<PictureBox^>^ cups = gcnew Generic::List<PictureBox^>();
-	private: System::Windows::Forms::ImageList^ imageList1;
-		   Generic::List<Label^>^ lbl_cups = gcnew Generic::List<Label^>();
+		int cupID = -1;
+		System::Windows::Forms::ImageList^ imageList1;
+		Generic::List<Label^>^ lbl_cups = gcnew Generic::List<Label^>();
 
 	public:
 		MainWin(void)
@@ -52,8 +54,16 @@ namespace POiIOkubeczki {
 	private: System::Windows::Forms::ToolStripMenuItem^ statystykaToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ kubekToolStripMenuItem;
 	private: System::Windows::Forms::ToolStripMenuItem^ dodajKubekToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^ usuñKubekToolStripMenuItem;
-	private: System::Windows::Forms::ToolStripMenuItem^ dodajSubstancjeToolStripMenuItem;
+
+
+
+
+	private: System::Windows::Forms::ToolStripMenuItem^ delCupMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ addSubMenuItem;
+
+
+
+
 	private: System::Windows::Forms::ToolStripMenuItem^ oAutorzeToolStripMenuItem;
 	private: System::ComponentModel::IContainer^ components;
 
@@ -85,8 +95,8 @@ namespace POiIOkubeczki {
 			this->statystykaToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->kubekToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->dodajKubekToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->usuñKubekToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
-			this->dodajSubstancjeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->delCupMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->addSubMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->oAutorzeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
 			this->imageList1 = (gcnew System::Windows::Forms::ImageList(this->components));
 			this->menuStrip1->SuspendLayout();
@@ -102,7 +112,7 @@ namespace POiIOkubeczki {
 			});
 			this->menuStrip1->Location = System::Drawing::Point(0, 0);
 			this->menuStrip1->Name = L"menuStrip1";
-			this->menuStrip1->Size = System::Drawing::Size(1190, 48);
+			this->menuStrip1->Size = System::Drawing::Size(1190, 40);
 			this->menuStrip1->TabIndex = 0;
 			this->menuStrip1->Text = L"menuStrip1";
 			// 
@@ -110,7 +120,7 @@ namespace POiIOkubeczki {
 			// 
 			this->plikToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->zamknijToolStripMenuItem });
 			this->plikToolStripMenuItem->Name = L"plikToolStripMenuItem";
-			this->plikToolStripMenuItem->Size = System::Drawing::Size(71, 44);
+			this->plikToolStripMenuItem->Size = System::Drawing::Size(71, 38);
 			this->plikToolStripMenuItem->Text = L"Plik";
 			// 
 			// zamknijToolStripMenuItem
@@ -127,7 +137,7 @@ namespace POiIOkubeczki {
 					this->kubekToolStripMenuItem
 			});
 			this->edycjaToolStripMenuItem->Name = L"edycjaToolStripMenuItem";
-			this->edycjaToolStripMenuItem->Size = System::Drawing::Size(101, 44);
+			this->edycjaToolStripMenuItem->Size = System::Drawing::Size(101, 36);
 			this->edycjaToolStripMenuItem->Text = L"Edycja";
 			// 
 			// substancjeToolStripMenuItem
@@ -137,19 +147,19 @@ namespace POiIOkubeczki {
 					this->statystykaToolStripMenuItem
 			});
 			this->substancjeToolStripMenuItem->Name = L"substancjeToolStripMenuItem";
-			this->substancjeToolStripMenuItem->Size = System::Drawing::Size(262, 44);
+			this->substancjeToolStripMenuItem->Size = System::Drawing::Size(359, 44);
 			this->substancjeToolStripMenuItem->Text = L"Substancje";
 			// 
 			// dodajDoMenuToolStripMenuItem
 			// 
 			this->dodajDoMenuToolStripMenuItem->Name = L"dodajDoMenuToolStripMenuItem";
-			this->dodajDoMenuToolStripMenuItem->Size = System::Drawing::Size(314, 44);
+			this->dodajDoMenuToolStripMenuItem->Size = System::Drawing::Size(359, 44);
 			this->dodajDoMenuToolStripMenuItem->Text = L"Dodaj do menu";
 			// 
 			// statystykaToolStripMenuItem
 			// 
 			this->statystykaToolStripMenuItem->Name = L"statystykaToolStripMenuItem";
-			this->statystykaToolStripMenuItem->Size = System::Drawing::Size(314, 44);
+			this->statystykaToolStripMenuItem->Size = System::Drawing::Size(359, 44);
 			this->statystykaToolStripMenuItem->Text = L"Statystyka";
 			this->statystykaToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainWin::statystykaToolStripMenuItem_Click);
 			// 
@@ -157,35 +167,37 @@ namespace POiIOkubeczki {
 			// 
 			this->kubekToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
 				this->dodajKubekToolStripMenuItem,
-					this->usuñKubekToolStripMenuItem, this->dodajSubstancjeToolStripMenuItem
+					this->delCupMenuItem, this->addSubMenuItem
 			});
 			this->kubekToolStripMenuItem->Name = L"kubekToolStripMenuItem";
-			this->kubekToolStripMenuItem->Size = System::Drawing::Size(262, 44);
+			this->kubekToolStripMenuItem->Size = System::Drawing::Size(359, 44);
 			this->kubekToolStripMenuItem->Text = L"Kubek";
 			// 
 			// dodajKubekToolStripMenuItem
 			// 
 			this->dodajKubekToolStripMenuItem->Name = L"dodajKubekToolStripMenuItem";
-			this->dodajKubekToolStripMenuItem->Size = System::Drawing::Size(329, 44);
+			this->dodajKubekToolStripMenuItem->Size = System::Drawing::Size(359, 44);
 			this->dodajKubekToolStripMenuItem->Text = L"Dodaj kubek";
 			this->dodajKubekToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainWin::dodajKubekToolStripMenuItem_Click);
 			// 
-			// usuñKubekToolStripMenuItem
+			// delCupMenuItem
 			// 
-			this->usuñKubekToolStripMenuItem->Name = L"usuñKubekToolStripMenuItem";
-			this->usuñKubekToolStripMenuItem->Size = System::Drawing::Size(329, 44);
-			this->usuñKubekToolStripMenuItem->Text = L"Usuñ kubek";
+			this->delCupMenuItem->Enabled = false;
+			this->delCupMenuItem->Name = L"delCupMenuItem";
+			this->delCupMenuItem->Size = System::Drawing::Size(359, 44);
+			this->delCupMenuItem->Text = L"Usuñ kubek";
 			// 
-			// dodajSubstancjeToolStripMenuItem
+			// addSubMenuItem
 			// 
-			this->dodajSubstancjeToolStripMenuItem->Name = L"dodajSubstancjeToolStripMenuItem";
-			this->dodajSubstancjeToolStripMenuItem->Size = System::Drawing::Size(329, 44);
-			this->dodajSubstancjeToolStripMenuItem->Text = L"Dodaj substancje";
+			this->addSubMenuItem->Enabled = false;
+			this->addSubMenuItem->Name = L"addSubMenuItem";
+			this->addSubMenuItem->Size = System::Drawing::Size(359, 44);
+			this->addSubMenuItem->Text = L"Dodaj substancje";
 			// 
 			// oAutorzeToolStripMenuItem
 			// 
 			this->oAutorzeToolStripMenuItem->Name = L"oAutorzeToolStripMenuItem";
-			this->oAutorzeToolStripMenuItem->Size = System::Drawing::Size(139, 44);
+			this->oAutorzeToolStripMenuItem->Size = System::Drawing::Size(139, 38);
 			this->oAutorzeToolStripMenuItem->Text = L"O autorze";
 			this->oAutorzeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainWin::oAutorzeToolStripMenuItem_Click);
 			// 
@@ -207,6 +219,8 @@ namespace POiIOkubeczki {
 			this->Margin = System::Windows::Forms::Padding(6);
 			this->Name = L"MainWin";
 			this->Text = L"Program kubeczki";
+			this->Load += gcnew System::EventHandler(this, &MainWin::MainWin_Load);
+			this->DoubleClick += gcnew System::EventHandler(this, &MainWin::MainWin_Load);
 			this->menuStrip1->ResumeLayout(false);
 			this->menuStrip1->PerformLayout();
 			this->ResumeLayout(false);
@@ -229,6 +243,10 @@ namespace POiIOkubeczki {
 		cups->Add(pb);
 
 	}
+	private: Void addTCup() {
+		TCup cup;
+		cups_pnt.push_back(&cup);
+	}
 
 	private: Void addLblCup() {
 		Label^ lbl = (gcnew System::Windows::Forms::Label());
@@ -240,10 +258,48 @@ namespace POiIOkubeczki {
 			lbl->Location = System::Drawing::Point(12 + (10 + 199) * lbl_cups->Count, 243);
 			lbl->Name = L"lblCup" + Convert::ToString(lbl_cups->Count);
 			lbl->Text = L"cup #" + Convert::ToString(lbl_cups->Count);
-
+			
+			lbl->Click += gcnew System::EventHandler(this, &MainWin::selectCup);
 			this->Controls->Add(lbl);
 			lbl_cups->Add(lbl);
 	}
+	private: Void cleanLblCup() {
+		for each (Label ^ lbl in lbl_cups)
+		{
+			lbl->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			lbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8,
+				System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(238)));
+			lbl->ForeColor = System::Drawing::Color::FromArgb(0, 0, 0);
+		}
+		delCupMenuItem->Enabled = false;
+		delCupMenuItem->Text = L"Usuñ kubek";
+		addSubMenuItem->Enabled = false;
+		addSubMenuItem->Text = L"Dodaj substancje";
+		cupID = -1;
+	}
+
+	private: Void getCupID(Label^ lbl) {
+		int count = lbl_cups->Count;
+		int _id = -1;
+		bool run = true;
+
+		while (run)
+		{
+			_id += 1;
+
+			if (lbl == lbl_cups[_id]) run = false;
+			else if ((_id + 1 == count) && (run == true))
+			{
+				_id = -1;
+				run = false;
+			}
+		}
+
+		cupID = _id;
+	}
+
+
 #pragma endregion
 	private: System::Void statystykaToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	}
@@ -268,9 +324,33 @@ namespace POiIOkubeczki {
 
 	private: System::Void dodajKubekToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 	
+		addTCup();
 		addCup();
 		addLblCup();
 	
 	}
+
+	private: System::Void selectCup(System::Object^ sender, System::EventArgs^ e)
+	   {
+
+		   cleanLblCup();
+		   Label^ lbl = (Label^)sender;
+		   lbl->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
+		   lbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12,
+			   System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+			   static_cast<System::Byte>(238)));
+		   lbl->ForeColor = System::Drawing::Color::FromArgb(255, 0, 0);
+
+		   getCupID(lbl);
+		   delCupMenuItem->Enabled = true;
+		   delCupMenuItem->Text = L"Usuñ kubek #" + Convert::ToString(cupID);
+		   addSubMenuItem->Enabled = true;
+		   addSubMenuItem->Text = L"Dodaj substancje do kubka #" +
+			   Convert::ToString(cupID);
+	   }
+
+private: System::Void MainWin_Load(System::Object^ sender, System::EventArgs^ e) {
+	cleanLblCup();
+}
 };
 }
