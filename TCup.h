@@ -27,7 +27,7 @@ public:
 	float getSingleVolume(std::string name);
 	static void transferLiquid(TCup& from, TCup& to, float volume);
 	int get_volume();
-
+	std::string info(int _id);
 private:
 	int get_substance_id(std::string name);
 	void print_coe_vol();

@@ -1,4 +1,5 @@
 #include "TCup.h"
+#include <string>
 using namespace std;
 
 void TCup::add(TSubstance substance, double volume_in_ml)
@@ -387,7 +388,19 @@ int TCup::get_volume()
 	return volume;
 }
 
+string TCup::info(int _id)
+{
+	string info = "Kubek #" + to_string(_id) + "\n";
+	int count = substances.size();
 
+	for (int i = 0; i < count; i++)
+	{
+		string ml = std::to_string(volumes[i] * 1e6);
+		info += substances[i].get_name() + ": " + ml + "ml\n";
+	}
+
+	return info;
+}
 
 vector<TCup*> cups_pnt;
 

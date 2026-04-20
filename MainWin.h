@@ -2,6 +2,7 @@
 #include <vector>
 #include "OAutorze.h"
 #include "TCup.h"
+#include <msclr/marshal_cppstd.h>
 
 namespace POiIOkubeczki {
 
@@ -367,6 +368,29 @@ namespace POiIOkubeczki {
 		cupID = _id;
 	}
 
+
+	private: Void add_substance_to_cup(int vol)
+	{
+		String^ selected = subList->SelectedItem->ToString();
+		std::string name = msclr::interop::marshal_as<std::string>(selected);
+
+		TCup* cup_pnt = cups_pnt[cupID];
+		cup_pnt->add(name, vol);
+		show_cup_info();
+	}
+
+	private: Void show_cup_info()
+	{
+
+		TCup* cup_pnt = cups_pnt[cupID];
+		std::string info = cup_pnt->info(cupID);
+
+		String^ info_cli = gcnew String(info.c_str());
+		MessageBox::Show(info_cli, "Program kalkulator",
+			MessageBoxButtons::OK, MessageBoxIcon::Information);
+
+	}
+
 	private: Void fillSubList() {
 		subList->Items->Clear();
 		int count = substancje.size();
@@ -433,10 +457,10 @@ namespace POiIOkubeczki {
 	}
 
 	private: System::Void MainWin_Load(System::Object^ sender, System::EventArgs^ e) {
-		
+
 	}
 	private: System::Void addSubMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-		
+
 		add_substance_active = true;
 		menuStrip1->Enabled = false;
 		fillSubList();
@@ -501,13 +525,13 @@ namespace POiIOkubeczki {
 	private: System::Void wlej_Click(System::Object^ sender, System::EventArgs^ e) {
 
 		String^ text = subMI->Text;
+		int vol = 0;
 		try {
 			int num = Convert::ToInt32(text);
 			int index = subList->SelectedIndex;
 
 			if (index >= 0) {
-				MessageBox::Show("Poprawne dane - w kolejnym zadaniu zajmiemy siê warstw¹ logiczn¹", "Program kalkulator", MessageBoxButtons::OK,
-					MessageBoxIcon::Information);
+				add_substance_to_cup(num);
 				cleanLblCup();
 				add_substance_active = false;
 				menuStrip1->Enabled = true;
@@ -525,17 +549,18 @@ namespace POiIOkubeczki {
 		}
 
 	}
-	private: System::Void anuluj_Click(System::Object^ sender, System::EventArgs^ e) {
+	private: System::Void anuluj_Click(System::Object ^ sender, System::EventArgs ^ e) {
 
 		cleanLblCup();
 		add_substance_active = false;
 		menuStrip1->Enabled = true;
 	}
-	private: System::Void MainWin_Click(System::Object^ sender, System::EventArgs^ e) {
-	
+	private: System::Void MainWin_Click(System::Object ^ sender, System::EventArgs ^ e) {
+
 		if (add_substance_active == false) cleanLblCup();
-	
+
 	}
-};
+	};
+
 }
-	
+
