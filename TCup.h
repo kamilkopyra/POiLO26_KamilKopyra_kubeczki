@@ -28,6 +28,14 @@ public:
 	static void transferLiquid(TCup& from, TCup& to, float volume);
 	int get_volume();
 	std::string info(int _id);
+
+	std::vector<TSubstance> get_cup_substances() {
+		return substances;
+	}
+
+	std::vector<double> get_cup_volumes() {
+		return volumes;
+	}
 private:
 	int get_substance_id(std::string name);
 	void print_coe_vol();
