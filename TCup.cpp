@@ -61,7 +61,7 @@ int TCup::get_substance_id(string name)
 
 		if (sub_name == name) run = false;
 
-		if ((_id + 1 == count) and (run == true))
+		if ((_id + 1 == count) && (run == true))
 		{
 			std::cout << "Nie znaleziono płynu o podanej nazwie: \" " << name << "\"!\n";
 			run = false;
@@ -389,4 +389,5 @@ int TCup::get_volume()
 
 
 
+vector<TCup*> cups_pnt;
 
