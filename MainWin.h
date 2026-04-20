@@ -21,6 +21,7 @@ namespace POiIOkubeczki {
 	private:
 		Generic::List<PictureBox^>^ cups = gcnew Generic::List<PictureBox^>();
 		int cupID = -1;
+		bool add_substance_active = false;
 		System::Windows::Forms::ImageList^ imageList1;
 	private: System::Windows::Forms::ComboBox^ subList;
 	private: System::Windows::Forms::TextBox^ subMI;
@@ -279,6 +280,7 @@ namespace POiIOkubeczki {
 			this->Name = L"MainWin";
 			this->Text = L"Program kubeczki";
 			this->Load += gcnew System::EventHandler(this, &MainWin::MainWin_Load);
+			this->Click += gcnew System::EventHandler(this, &MainWin::MainWin_Click);
 			this->DoubleClick += gcnew System::EventHandler(this, &MainWin::MainWin_Load);
 			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &MainWin::MainWin_KeyUp);
 			this->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainWin::MainWin_MouseDown);
@@ -317,13 +319,13 @@ namespace POiIOkubeczki {
 		lbl->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
 
 
-			lbl->Location = System::Drawing::Point(12 + (10 + 199) * lbl_cups->Count, 243);
-			lbl->Name = L"lblCup" + Convert::ToString(lbl_cups->Count);
-			lbl->Text = L"cup #" + Convert::ToString(lbl_cups->Count);
-			
-			lbl->Click += gcnew System::EventHandler(this, &MainWin::selectCup);
-			this->Controls->Add(lbl);
-			lbl_cups->Add(lbl);
+		lbl->Location = System::Drawing::Point(12 + (10 + 199) * lbl_cups->Count, 243);
+		lbl->Name = L"lblCup" + Convert::ToString(lbl_cups->Count);
+		lbl->Text = L"cup #" + Convert::ToString(lbl_cups->Count);
+
+		lbl->Click += gcnew System::EventHandler(this, &MainWin::selectCup);
+		this->Controls->Add(lbl);
+		lbl_cups->Add(lbl);
 	}
 	private: Void cleanLblCup() {
 		for each (Label ^ lbl in lbl_cups)
@@ -401,123 +403,139 @@ namespace POiIOkubeczki {
 	}
 
 	private: System::Void dodajKubekToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-	
+
 		addTCup();
 		addCup();
 		addLblCup();
-	
+
 	}
 
 	private: System::Void selectCup(System::Object^ sender, System::EventArgs^ e)
-	   {
+	{
 
-		   cleanLblCup();
-		   Label^ lbl = (Label^)sender;
-		   lbl->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
-		   lbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12,
-			   System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
-			   static_cast<System::Byte>(238)));
-		   lbl->ForeColor = System::Drawing::Color::FromArgb(255, 0, 0);
+		if (add_substance_active == false)
+		{
+			cleanLblCup();
+			Label^ lbl = (Label^)sender;
+			lbl->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
+			lbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12,
+				System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(238)));
+			lbl->ForeColor = System::Drawing::Color::FromArgb(255, 0, 0);
 
-		   getCupID(lbl);
-		   delCupMenuItem->Enabled = true;
-		   delCupMenuItem->Text = L"Usuñ kubek #" + Convert::ToString(cupID);
-		   addSubMenuItem->Enabled = true;
-		   addSubMenuItem->Text = L"Dodaj substancje do kubka #" +
-			   Convert::ToString(cupID);
-	   }
+			getCupID(lbl);
+			delCupMenuItem->Enabled = true;
+			delCupMenuItem->Text = L"Usuñ kubek #" + Convert::ToString(cupID);
+			addSubMenuItem->Enabled = true;
+			addSubMenuItem->Text = L"Dodaj substancje do kubka #" +
+				Convert::ToString(cupID);
+		}
+	}
 
-private: System::Void MainWin_Load(System::Object^ sender, System::EventArgs^ e) {
-	cleanLblCup();
-}
-private: System::Void addSubMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
-	fillSubList();
+	private: System::Void MainWin_Load(System::Object^ sender, System::EventArgs^ e) {
+		
+	}
+	private: System::Void addSubMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+		
+		add_substance_active = true;
+		menuStrip1->Enabled = false;
+		fillSubList();
 
-	subMI->Size = System::Drawing::Size(199, 22);
-	subList->Size = System::Drawing::Size(199, 22);
-	subList->Location = System::Drawing::Point(12 + (10 + 199) * cupID,
-		273);
-	subMI->Location = System::Drawing::Point(12 + (10 + 199) * cupID,
-		302);
-	wlej->Location = System::Drawing::Point(12 + (10 + 199) * cupID, 330);
-	anuluj->Location = System::Drawing::Point(150 + (10 + 199) * cupID,
-		330);
+		subMI->Size = System::Drawing::Size(199, 22);
+		subList->Size = System::Drawing::Size(199, 22);
+		subList->Location = System::Drawing::Point(12 + (10 + 199) * cupID,
+			273);
+		subMI->Location = System::Drawing::Point(12 + (10 + 199) * cupID,
+			302);
+		wlej->Location = System::Drawing::Point(12 + (10 + 199) * cupID, 330);
+		anuluj->Location = System::Drawing::Point(150 + (10 + 199) * cupID,
+			330);
 
-	subMI->Text = L"Wpisz iloœæ w [ml]";
+		subMI->Text = L"Wpisz iloœæ w [ml]";
 
-	subList->Visible = true;
-	subMI->Visible = true;
-	wlej->Visible = true;
-	anuluj->Visible = true;
-}
-private: System::Void MainWin_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+		subList->Visible = true;
+		subMI->Visible = true;
+		wlej->Visible = true;
+		anuluj->Visible = true;
+	}
+	private: System::Void MainWin_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
 
-	subMI->Text = "";
+		subMI->Text = "";
 
-}
-private: System::Void MainWin_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
-
-	
+	}
+	private: System::Void MainWin_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
 
 
 
-}
-private: System::Void subMI_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
 
-	String^ text = subMI->Text;
-	try {
-		int num = Convert::ToInt32(text);
 
-		if (num <= 0) {
-			MessageBox::Show("WprowadŸ liczbê ca³kowit¹ dodatni¹", "Program kalkulator", MessageBoxButtons::OK,
-				MessageBoxIcon::Error);
+	}
+	private: System::Void subMI_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+
+		String^ text = subMI->Text;
+		try {
+			int num = Convert::ToInt32(text);
+
+			if (num <= 0) {
+				MessageBox::Show("WprowadŸ liczbê ca³kowit¹ dodatni¹", "Program kalkulator", MessageBoxButtons::OK,
+					MessageBoxIcon::Error);
+				subMI->Text = "";
+			}
+
+		}
+		catch (...) {
+			MessageBox::Show("WprowadŸ liczbê", "Program kalkulator",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+
+			if (text->Length > 0) subMI->Text = text->Substring(0, text->Length - 1);
+			else subMI->Text = "";
+		}
+
+
+
+	}
+	private: System::Void subMI_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+
+		subMI->Text = "";
+	}
+	private: System::Void wlej_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		String^ text = subMI->Text;
+		try {
+			int num = Convert::ToInt32(text);
+			int index = subList->SelectedIndex;
+
+			if (index >= 0) {
+				MessageBox::Show("Poprawne dane - w kolejnym zadaniu zajmiemy siê warstw¹ logiczn¹", "Program kalkulator", MessageBoxButtons::OK,
+					MessageBoxIcon::Information);
+				cleanLblCup();
+				add_substance_active = false;
+				menuStrip1->Enabled = true;
+			}
+			else {
+				MessageBox::Show("Wybierz ciecz do dolania!",
+					"Program kalkulator", MessageBoxButtons::OK,
+					MessageBoxIcon::Error);
+			}
+		}
+		catch (...) {
+			MessageBox::Show("WprowadŸ liczbê", "Program kalkulator",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
 			subMI->Text = "";
 		}
 
 	}
-	catch (...) {
-		MessageBox::Show("WprowadŸ liczbê", "Program kalkulator",
-			MessageBoxButtons::OK, MessageBoxIcon::Error);
+	private: System::Void anuluj_Click(System::Object^ sender, System::EventArgs^ e) {
 
-		if (text->Length > 0) subMI->Text = text->Substring(0, text->Length - 1);
-		else subMI->Text = "";
+		cleanLblCup();
+		add_substance_active = false;
+		menuStrip1->Enabled = true;
 	}
-
-
-
-}
-private: System::Void subMI_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
-
-	subMI->Text = "";
-}
-private: System::Void wlej_Click(System::Object^ sender, System::EventArgs^ e) {
-
-	String^ text = subMI->Text;
-	try {
-		int num = Convert::ToInt32(text);
-		int index = subList->SelectedIndex;
-
-		if (index >= 0) {
-			MessageBox::Show("Poprawne dane - w kolejnym zadaniu zajmiemy siê warstw¹ logiczn¹", "Program kalkulator", MessageBoxButtons::OK, 
-				MessageBoxIcon::Information);
-			cleanLblCup();
-		}
-		else {
-			MessageBox::Show("Wybierz ciecz do dolania!",
-				"Program kalkulator", MessageBoxButtons::OK,
-				MessageBoxIcon::Error);
-		}
-	}
-	catch (...) {
-		MessageBox::Show("WprowadŸ liczbê", "Program kalkulator",
-			MessageBoxButtons::OK, MessageBoxIcon::Error);
-		subMI->Text = "";
-	}
-
-}
-private: System::Void anuluj_Click(System::Object^ sender, System::EventArgs^ e) {
+	private: System::Void MainWin_Click(System::Object^ sender, System::EventArgs^ e) {
 	
-	cleanLblCup();
-}
+		if (add_substance_active == false) cleanLblCup();
+	
+	}
 };
 }
+	
