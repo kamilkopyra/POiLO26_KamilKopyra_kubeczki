@@ -16,4 +16,4 @@ public:
 	std::vector<int> get_color();
 };
 
-extern std::vector<TSubstance> substancje;
+extern std::vector<TSubstance> substance_menu;

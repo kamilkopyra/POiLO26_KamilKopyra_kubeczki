@@ -45,20 +45,20 @@ void TCup::add(std::string name, double volume_in_ml)
 
 	if (_id >= 0)
 	{
-		this->add(substancje[_id], volume_in_ml);
+		this->add(substance_menu[_id], volume_in_ml);
 	}
 }
 
 int TCup::get_substance_id(string name)
 {
-	int count = substancje.size();
+	int count = substance_menu.size();
 	int _id = -1;
 	bool run = true;
 
 	while (run)
 	{
 		_id += 1;
-		string sub_name = substancje[_id].get_name();
+		string sub_name = substance_menu[_id].get_name();
 
 		if (sub_name == name) run = false;
 

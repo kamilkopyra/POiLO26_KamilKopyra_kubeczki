@@ -25,7 +25,7 @@ std::vector<int> TSubstance::get_color()
 }
 
 
-vector<TSubstance> substancje =
+vector<TSubstance> substance_menu =
 {
 	  TSubstance{"woda", 997.8, 95, 165, 250},
 	  TSubstance{"mleko", 1030.0, 192, 230, 238},

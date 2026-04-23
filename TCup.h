@@ -36,8 +36,10 @@ public:
 	std::vector<double> get_cup_volumes() {
 		return volumes;
 	}
-private:
 	int get_substance_id(std::string name);
+	
+private:
+
 	void print_coe_vol();
 	void print_coe_mass();
 	float getAbsoluteMass();
@@ -48,6 +50,7 @@ private:
 	void showTransferInfo(TCup from, TCup to, float volume);
 	double roundSmallToZero(double value, double threshold);
 	int volume;
+
 };
 
 extern std::vector<TCup*> cups_pnt;

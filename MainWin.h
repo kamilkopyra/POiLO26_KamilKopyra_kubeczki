@@ -3,6 +3,7 @@
 #include "OAutorze.h"
 #include "TCup.h"
 #include <msclr/marshal_cppstd.h>
+#include "Histogram.h"
 
 namespace POiIOkubeczki {
 
@@ -22,6 +23,7 @@ namespace POiIOkubeczki {
 	private:
 		Generic::List<PictureBox^>^ cups = gcnew Generic::List<PictureBox^>();
 		Generic::List<Label^>^ lbl_subs = gcnew Generic::List<Label^>();
+		Generic::List<Label^>^ lbl_cups = gcnew Generic::List<Label^>();
 		int cupID = -1;
 		bool add_substance_active = false;
 		System::Windows::Forms::ImageList^ imageList1;
@@ -33,12 +35,13 @@ namespace POiIOkubeczki {
 
 	private: System::Windows::Forms::Button^ anuluj;
 
-		   Generic::List<Label^>^ lbl_cups = gcnew Generic::List<Label^>();
+		  
 
 	public:
 		MainWin(void)
 		{
 			InitializeComponent();
+			this->KeyPreview = true;
 			//
 			//TODO: W tym miejscu dodaj kod konstruktora
 			//
@@ -284,6 +287,7 @@ namespace POiIOkubeczki {
 			this->Load += gcnew System::EventHandler(this, &MainWin::MainWin_Load);
 			this->Click += gcnew System::EventHandler(this, &MainWin::MainWin_Click);
 			this->DoubleClick += gcnew System::EventHandler(this, &MainWin::MainWin_Load);
+			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MainWin::MainWin_KeyDown);
 			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &MainWin::MainWin_KeyUp);
 			this->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainWin::MainWin_MouseDown);
 			this->menuStrip1->ResumeLayout(false);
@@ -306,6 +310,7 @@ namespace POiIOkubeczki {
 
 		this->Controls->Add(pb);
 		cups->Add(pb);
+
 
 	}
 	private: Void addTCup() {
@@ -407,10 +412,10 @@ namespace POiIOkubeczki {
 
 	private: Void fillSubList() {
 		subList->Items->Clear();
-		int count = substancje.size();
+		int count = substance_menu.size();
 
 		for (int i = 0; i < count; i++) {
-			std::string name = substancje[i].get_name();
+			std::string name = substance_menu[i].get_name();
 			String^ name_cli = gcnew String(name.c_str());
 			subList->Items->Add(name_cli);
 		}
@@ -420,6 +425,10 @@ namespace POiIOkubeczki {
 
 #pragma endregion
 	private: System::Void statystykaToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		Histogram^ hist = gcnew Histogram();
+		hist->Show();
+
 	}
 	private: System::Void zamknijToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 
@@ -442,15 +451,21 @@ namespace POiIOkubeczki {
 
 	private: System::Void dodajKubekToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
 
+		add_cup_gui();
+	}
+	private: Void add_cup_gui() {
 		addTCup();
 		addCup();
 		addLblCup();
-
 	}
 
 	private: System::Void selectCup(System::Object^ sender, System::EventArgs^ e)
 	{
+		select_cup_gui(sender);
+		
+	}
 
+	private: Void select_cup_gui(System::Object^ sender) {
 		if (add_substance_active == false)
 		{
 			cleanLblCup();
@@ -474,7 +489,11 @@ namespace POiIOkubeczki {
 
 	}
 	private: System::Void addSubMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	
+		add_sub_gui();
+	}
 
+	private: Void add_sub_gui() {
 		add_substance_active = true;
 		menuStrip1->Enabled = false;
 		fillSubList();
@@ -502,8 +521,6 @@ namespace POiIOkubeczki {
 
 	}
 	private: System::Void MainWin_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
-
-
 
 
 
@@ -620,7 +637,28 @@ namespace POiIOkubeczki {
 		if (add_substance_active == false) cleanLblCup();
 
 	}
-	};
+	private: System::Void MainWin_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+
+		if (e->KeyCode == Keys::Add)
+		{
+			if (cupID == -1) add_cup_gui();
+			else add_sub_gui();
+		}
+
+		if ((e->KeyCode >= Keys::D0) && (e->KeyCode <= Keys::D9))
+		{
+			int i = e->KeyValue - 48;
+
+			if (i < cups->Count)
+			{
+				Label^ cup_lbl = lbl_cups[i];
+				select_cup_gui(cup_lbl);
+			}
+		}
+
+
+	}
+};
 
 }
 
