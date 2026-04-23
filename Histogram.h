@@ -122,8 +122,8 @@ namespace POiIOkubeczki {
 		std::vector<std::vector<int>> colors;
 		get_hist_data(&subs_name, &vols, &colors);
 
-		String^ test = Convert::ToString(vols.size());
-		MessageBox::Show(test, "a", MessageBoxButtons::OK, MessageBoxIcon::Information);
+		//String^ test = Convert::ToString(vols.size());
+		//MessageBox::Show(test, "a", MessageBoxButtons::OK, MessageBoxIcon::Information);
 
 		for (int i = 0; i < vols.size(); i++)
 		{
@@ -147,22 +147,24 @@ namespace POiIOkubeczki {
 		{
 			std::string name = substance_menu[i_sub].get_name();
 			std::vector<int> color = substance_menu[i_sub].get_color();
-			(*subs_name).push_back(name);
-			(*vols).push_back(0);
-			(*colors).push_back(color);
+
+			subs_name->push_back(name);
+			vols->push_back(0);
+			colors->push_back(color);
 
 			for (int i_cup = 0; i_cup < cup_count; i_cup++)
 			{
-				TCup* cup = cups_pnt[i_cup];
-				int _id_in_cup = cup->get_substance_id(name);
+				// ZMIANA: U¿ywamy get_vol_id zamiast get_substance_id
+				// get_vol_id szuka w wektorze 'substances' danego kubka
+				int _id_in_cup = cups_pnt[i_cup]->getVol_id(name);
 
-			if (_id_in_cup >= 0)
-			{
-				std::vector<double> cup_vols =
-					cups_pnt[i_cup]->get_cup_volumes();
-				(*vols)[i_sub] += cup_vols[_id_in_cup] *
-					1e6;
-			}
+				if (_id_in_cup >= 0)
+				{
+					std::vector<double> cup_vols = cups_pnt[i_cup]->get_cup_volumes();
+
+					// Teraz _id_in_cup pasuje do rozmiaru cup_vols
+					(*vols)[i_sub] += static_cast<int>(cup_vols[_id_in_cup] * 1e6);
+				}
 			}
 		}
 	}

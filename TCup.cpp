@@ -402,5 +402,18 @@ string TCup::info(int _id)
 	return info;
 }
 
+int TCup::getVol_id(std::string name) {
+	int count = substances.size();
+	for (int i = 0; i < count; i++)
+	{
+		std::string name_check = substances[i].get_name();
+		if (name == name_check)
+		{
+			return i;
+		}
+	}
+	return -1;
+}
+
 vector<TCup*> cups_pnt;
 

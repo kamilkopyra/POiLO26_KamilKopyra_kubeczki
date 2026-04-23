@@ -37,6 +37,7 @@ public:
 		return volumes;
 	}
 	int get_substance_id(std::string name);
+	int getVol_id(std::string name);
 	
 private:
 
@@ -50,6 +51,7 @@ private:
 	void showTransferInfo(TCup from, TCup to, float volume);
 	double roundSmallToZero(double value, double threshold);
 	int volume;
+	
 
 };
 
