@@ -16,8 +16,8 @@ public:
 		this->volume = volume;
 	}
 
-	void add(TSubstance substance, double volume_in_ml);
-	void add(std::string name, double volume_in_ml);
+	int add(TSubstance substance, double volume_in_ml);
+	int add(std::string name, double volume_in_ml);
 	void show();
 	double return_coe_vol(std::string name);
 	double return_coe_mass(std::string name);

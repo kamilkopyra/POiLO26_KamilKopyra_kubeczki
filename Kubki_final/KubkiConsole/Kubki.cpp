@@ -49,12 +49,12 @@ int main()
 	kubek1.show();
 
 
-	/*
-	TCup::transferLiquid(kubek2, kubek3, 10000);
+	
+	//TCup::transferLiquid(kubek2, kubek3, 10000);
 
 
-	kubek1.show();
-	kubek2.show();
-	kubek3.show();
-	*/
+	//kubek1.show();
+	//kubek2.show();
+	////kubek3.show();
+	
 }

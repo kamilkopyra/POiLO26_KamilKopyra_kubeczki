@@ -3,9 +3,10 @@
 #include <string>
 using namespace std;
 
-void TCup::add(TSubstance substance, double volume_in_ml)
+int TCup::add(TSubstance substance, double volume_in_ml)
 {
 	int flag = 1;
+	int status = 0;
 
 
 	float volume = getAbsoluteVolume() * 1000;
@@ -33,21 +34,29 @@ void TCup::add(TSubstance substance, double volume_in_ml)
 		if (flag == 1) {
 			substances.push_back(substance);
 			volumes.push_back(volume_in_ml / 1e6);
+			status = 1;
 		}
 	}
-	else { cout << "W kubku nie ma wystarczajacej ilosci wolnego miejsca. Operacja anulowana...\n"; }
+	else {
+		cout << "W kubku nie ma wystarczajacej ilosci wolnego miejsca. Operacja anulowana...\n";
+		status = 2;
+	}
 
+	return status;
 }
-void TCup::add(std::string name, double volume_in_ml)
+int TCup::add(std::string name, double volume_in_ml)
 {
+	int status = 0;
 	int _id = get_substance_id(name);
 
 
 
 	if (_id >= 0)
 	{
-		this->add(substance_menu[_id], volume_in_ml);
+		status = this->add(substance_menu[_id], volume_in_ml);
 	}
+	else { status = -1; }
+	return status;
 }
 
 int TCup::get_substance_id(string name)
