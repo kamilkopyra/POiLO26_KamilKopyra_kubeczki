@@ -1,4 +1,6 @@
+
 #include "TSubstance.h"
+
 using namespace std;
 
 TSubstance::TSubstance(string name, double ro, int red, int green, int blue)

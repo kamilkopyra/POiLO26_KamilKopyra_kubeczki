@@ -2,7 +2,6 @@
 #include <iostream>
 #include <vector>
 
-
 class TSubstance
 {
 	std::string name;
