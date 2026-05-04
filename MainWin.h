@@ -1,0 +1,664 @@
+#pragma once
+#include <vector>
+#include "OAutorze.h"
+#include "TCup.h"
+#include <msclr/marshal_cppstd.h>
+#include "Histogram.h"
+
+namespace POiIOkubeczki {
+
+	using namespace System;
+	using namespace System::ComponentModel;
+	using namespace System::Collections;
+	using namespace System::Windows::Forms;
+	using namespace System::Data;
+	using namespace System::Drawing;
+
+	/// <summary>
+	/// Podsumowanie informacji o MainWin
+	/// </summary>
+	public ref class MainWin : public System::Windows::Forms::Form
+	{
+
+	private:
+		Generic::List<PictureBox^>^ cups = gcnew Generic::List<PictureBox^>();
+		Generic::List<Label^>^ lbl_subs = gcnew Generic::List<Label^>();
+		Generic::List<Label^>^ lbl_cups = gcnew Generic::List<Label^>();
+		int cupID = -1;
+		bool add_substance_active = false;
+		System::Windows::Forms::ImageList^ imageList1;
+	private: System::Windows::Forms::ComboBox^ subList;
+	private: System::Windows::Forms::TextBox^ subMI;
+
+	private: System::Windows::Forms::Button^ wlej;
+
+
+	private: System::Windows::Forms::Button^ anuluj;
+
+		  
+
+	public:
+		MainWin(void)
+		{
+			InitializeComponent();
+			this->KeyPreview = true;
+			//
+			//TODO: W tym miejscu dodaj kod konstruktora
+			//
+		}
+
+	protected:
+		/// <summary>
+		/// Wyczyœæ wszystkie u¿ywane zasoby.
+		/// </summary>
+		~MainWin()
+		{
+			if (components)
+			{
+				delete components;
+			}
+		}
+	private: System::Windows::Forms::MenuStrip^ menuStrip1;
+	protected:
+	private: System::Windows::Forms::ToolStripMenuItem^ plikToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ zamknijToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ edycjaToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ substancjeToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ dodajDoMenuToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ statystykaToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ kubekToolStripMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ dodajKubekToolStripMenuItem;
+
+
+
+	private: System::Windows::Forms::ToolStripMenuItem^ delCupMenuItem;
+	private: System::Windows::Forms::ToolStripMenuItem^ addSubMenuItem;
+
+
+
+	private: System::Windows::Forms::ToolStripMenuItem^ oAutorzeToolStripMenuItem;
+	private: System::ComponentModel::IContainer^ components;
+
+
+
+
+
+	private:
+		/// <summary>
+		/// Wymagana zmienna projektanta.
+		/// </summary>
+
+
+#pragma region Windows Form Designer generated code
+		/// <summary>
+		/// Metoda wymagana do obs³ugi projektanta — nie nale¿y modyfikowaæ
+		/// jej zawartoœci w edytorze kodu.
+		/// </summary>
+		void InitializeComponent(void)
+		{
+			this->components = (gcnew System::ComponentModel::Container());
+			System::ComponentModel::ComponentResourceManager^ resources = (gcnew System::ComponentModel::ComponentResourceManager(MainWin::typeid));
+			this->menuStrip1 = (gcnew System::Windows::Forms::MenuStrip());
+			this->plikToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->zamknijToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->edycjaToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->substancjeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->dodajDoMenuToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->statystykaToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->kubekToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->dodajKubekToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->delCupMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->addSubMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->oAutorzeToolStripMenuItem = (gcnew System::Windows::Forms::ToolStripMenuItem());
+			this->imageList1 = (gcnew System::Windows::Forms::ImageList(this->components));
+			this->subList = (gcnew System::Windows::Forms::ComboBox());
+			this->subMI = (gcnew System::Windows::Forms::TextBox());
+			this->wlej = (gcnew System::Windows::Forms::Button());
+			this->anuluj = (gcnew System::Windows::Forms::Button());
+			this->menuStrip1->SuspendLayout();
+			this->SuspendLayout();
+			// 
+			// menuStrip1
+			// 
+			this->menuStrip1->GripMargin = System::Windows::Forms::Padding(2, 2, 0, 2);
+			this->menuStrip1->ImageScalingSize = System::Drawing::Size(32, 32);
+			this->menuStrip1->Items->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
+				this->plikToolStripMenuItem,
+					this->edycjaToolStripMenuItem, this->oAutorzeToolStripMenuItem
+			});
+			this->menuStrip1->Location = System::Drawing::Point(0, 0);
+			this->menuStrip1->Name = L"menuStrip1";
+			this->menuStrip1->Size = System::Drawing::Size(1190, 40);
+			this->menuStrip1->TabIndex = 0;
+			this->menuStrip1->Text = L"menuStrip1";
+			// 
+			// plikToolStripMenuItem
+			// 
+			this->plikToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(1) { this->zamknijToolStripMenuItem });
+			this->plikToolStripMenuItem->Name = L"plikToolStripMenuItem";
+			this->plikToolStripMenuItem->Size = System::Drawing::Size(71, 36);
+			this->plikToolStripMenuItem->Text = L"Plik";
+			// 
+			// zamknijToolStripMenuItem
+			// 
+			this->zamknijToolStripMenuItem->Name = L"zamknijToolStripMenuItem";
+			this->zamknijToolStripMenuItem->Size = System::Drawing::Size(232, 44);
+			this->zamknijToolStripMenuItem->Text = L"Zamknij";
+			this->zamknijToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainWin::zamknijToolStripMenuItem_Click);
+			// 
+			// edycjaToolStripMenuItem
+			// 
+			this->edycjaToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+				this->substancjeToolStripMenuItem,
+					this->kubekToolStripMenuItem
+			});
+			this->edycjaToolStripMenuItem->Name = L"edycjaToolStripMenuItem";
+			this->edycjaToolStripMenuItem->Size = System::Drawing::Size(101, 36);
+			this->edycjaToolStripMenuItem->Text = L"Edycja";
+			// 
+			// substancjeToolStripMenuItem
+			// 
+			this->substancjeToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(2) {
+				this->dodajDoMenuToolStripMenuItem,
+					this->statystykaToolStripMenuItem
+			});
+			this->substancjeToolStripMenuItem->Name = L"substancjeToolStripMenuItem";
+			this->substancjeToolStripMenuItem->Size = System::Drawing::Size(262, 44);
+			this->substancjeToolStripMenuItem->Text = L"Substancje";
+			// 
+			// dodajDoMenuToolStripMenuItem
+			// 
+			this->dodajDoMenuToolStripMenuItem->Name = L"dodajDoMenuToolStripMenuItem";
+			this->dodajDoMenuToolStripMenuItem->Size = System::Drawing::Size(314, 44);
+			this->dodajDoMenuToolStripMenuItem->Text = L"Dodaj do menu";
+			// 
+			// statystykaToolStripMenuItem
+			// 
+			this->statystykaToolStripMenuItem->Name = L"statystykaToolStripMenuItem";
+			this->statystykaToolStripMenuItem->Size = System::Drawing::Size(314, 44);
+			this->statystykaToolStripMenuItem->Text = L"Statystyka";
+			this->statystykaToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainWin::statystykaToolStripMenuItem_Click);
+			// 
+			// kubekToolStripMenuItem
+			// 
+			this->kubekToolStripMenuItem->DropDownItems->AddRange(gcnew cli::array< System::Windows::Forms::ToolStripItem^  >(3) {
+				this->dodajKubekToolStripMenuItem,
+					this->delCupMenuItem, this->addSubMenuItem
+			});
+			this->kubekToolStripMenuItem->Name = L"kubekToolStripMenuItem";
+			this->kubekToolStripMenuItem->Size = System::Drawing::Size(262, 44);
+			this->kubekToolStripMenuItem->Text = L"Kubek";
+			// 
+			// dodajKubekToolStripMenuItem
+			// 
+			this->dodajKubekToolStripMenuItem->Name = L"dodajKubekToolStripMenuItem";
+			this->dodajKubekToolStripMenuItem->Size = System::Drawing::Size(329, 44);
+			this->dodajKubekToolStripMenuItem->Text = L"Dodaj kubek";
+			this->dodajKubekToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainWin::dodajKubekToolStripMenuItem_Click);
+			// 
+			// delCupMenuItem
+			// 
+			this->delCupMenuItem->Enabled = false;
+			this->delCupMenuItem->Name = L"delCupMenuItem";
+			this->delCupMenuItem->Size = System::Drawing::Size(329, 44);
+			this->delCupMenuItem->Text = L"Usuñ kubek";
+			// 
+			// addSubMenuItem
+			// 
+			this->addSubMenuItem->Enabled = false;
+			this->addSubMenuItem->Name = L"addSubMenuItem";
+			this->addSubMenuItem->Size = System::Drawing::Size(329, 44);
+			this->addSubMenuItem->Text = L"Dodaj substancje";
+			this->addSubMenuItem->Click += gcnew System::EventHandler(this, &MainWin::addSubMenuItem_Click);
+			// 
+			// oAutorzeToolStripMenuItem
+			// 
+			this->oAutorzeToolStripMenuItem->Name = L"oAutorzeToolStripMenuItem";
+			this->oAutorzeToolStripMenuItem->Size = System::Drawing::Size(139, 36);
+			this->oAutorzeToolStripMenuItem->Text = L"O autorze";
+			this->oAutorzeToolStripMenuItem->Click += gcnew System::EventHandler(this, &MainWin::oAutorzeToolStripMenuItem_Click);
+			// 
+			// imageList1
+			// 
+			this->imageList1->ImageStream = (cli::safe_cast<System::Windows::Forms::ImageListStreamer^>(resources->GetObject(L"imageList1.ImageStream")));
+			this->imageList1->TransparentColor = System::Drawing::Color::Transparent;
+			this->imageList1->Images->SetKeyName(0, L"cup.png");
+			// 
+			// subList
+			// 
+			this->subList->DropDownStyle = System::Windows::Forms::ComboBoxStyle::DropDownList;
+			this->subList->FormattingEnabled = true;
+			this->subList->Location = System::Drawing::Point(12, 254);
+			this->subList->Name = L"subList";
+			this->subList->Size = System::Drawing::Size(348, 33);
+			this->subList->TabIndex = 1;
+			this->subList->Visible = false;
+			// 
+			// subMI
+			// 
+			this->subMI->Location = System::Drawing::Point(12, 293);
+			this->subMI->Name = L"subMI";
+			this->subMI->Size = System::Drawing::Size(199, 31);
+			this->subMI->TabIndex = 2;
+			this->subMI->Text = L"Wpisz iloœæ w [ml]";
+			this->subMI->TextAlign = System::Windows::Forms::HorizontalAlignment::Right;
+			this->subMI->Visible = false;
+			this->subMI->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &MainWin::subMI_KeyUp);
+			this->subMI->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainWin::subMI_MouseDown);
+			// 
+			// wlej
+			// 
+			this->wlej->Location = System::Drawing::Point(12, 330);
+			this->wlej->Name = L"wlej";
+			this->wlej->Size = System::Drawing::Size(95, 40);
+			this->wlej->TabIndex = 3;
+			this->wlej->Text = L"Wlej";
+			this->wlej->UseVisualStyleBackColor = true;
+			this->wlej->Visible = false;
+			this->wlej->Click += gcnew System::EventHandler(this, &MainWin::wlej_Click);
+			// 
+			// anuluj
+			// 
+			this->anuluj->Location = System::Drawing::Point(241, 330);
+			this->anuluj->Name = L"anuluj";
+			this->anuluj->Size = System::Drawing::Size(119, 40);
+			this->anuluj->TabIndex = 4;
+			this->anuluj->Text = L"Anuluj";
+			this->anuluj->UseVisualStyleBackColor = true;
+			this->anuluj->Visible = false;
+			this->anuluj->Click += gcnew System::EventHandler(this, &MainWin::anuluj_Click);
+			// 
+			// MainWin
+			// 
+			this->AutoScaleDimensions = System::Drawing::SizeF(12, 25);
+			this->AutoScaleMode = System::Windows::Forms::AutoScaleMode::Font;
+			this->AutoScroll = true;
+			this->ClientSize = System::Drawing::Size(1190, 674);
+			this->Controls->Add(this->anuluj);
+			this->Controls->Add(this->wlej);
+			this->Controls->Add(this->subMI);
+			this->Controls->Add(this->subList);
+			this->Controls->Add(this->menuStrip1);
+			this->Icon = (cli::safe_cast<System::Drawing::Icon^>(resources->GetObject(L"$this.Icon")));
+			this->MainMenuStrip = this->menuStrip1;
+			this->Margin = System::Windows::Forms::Padding(6);
+			this->Name = L"MainWin";
+			this->Text = L"Program kubeczki";
+			this->Load += gcnew System::EventHandler(this, &MainWin::MainWin_Load);
+			this->Click += gcnew System::EventHandler(this, &MainWin::MainWin_Click);
+			this->DoubleClick += gcnew System::EventHandler(this, &MainWin::MainWin_Load);
+			this->KeyDown += gcnew System::Windows::Forms::KeyEventHandler(this, &MainWin::MainWin_KeyDown);
+			this->KeyUp += gcnew System::Windows::Forms::KeyEventHandler(this, &MainWin::MainWin_KeyUp);
+			this->MouseDown += gcnew System::Windows::Forms::MouseEventHandler(this, &MainWin::MainWin_MouseDown);
+			this->menuStrip1->ResumeLayout(false);
+			this->menuStrip1->PerformLayout();
+			this->ResumeLayout(false);
+			this->PerformLayout();
+
+		}
+
+
+	private: Void addCup() {
+		PictureBox^ pb = gcnew PictureBox();
+		pb->Size = Drawing::Size(199, 319);
+		pb->SizeMode = System::Windows::Forms::PictureBoxSizeMode::AutoSize;
+		pb->Image = imageList1->Images[0];
+
+		//pb->Location = Point(12, 41);
+		pb->Location = Point(12 + (10 + 199) * cups->Count, 41);
+		pb->Name = L"cup" + Convert::ToString(cups->Count);
+
+		this->Controls->Add(pb);
+		cups->Add(pb);
+
+
+	}
+	private: Void addTCup() {
+		// Allocate TCup on the heap with an explicit volume (no default constructor required)
+		TCup* cup = new TCup(200);
+		cups_pnt.push_back(cup);
+	}
+
+	private: Void addLblCup() {
+		Label^ lbl = (gcnew System::Windows::Forms::Label());
+		lbl->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+		lbl->Size = System::Drawing::Size(199, 22);
+		lbl->TextAlign = System::Drawing::ContentAlignment::MiddleCenter;
+
+
+		lbl->Location = System::Drawing::Point(12 + (10 + 199) * lbl_cups->Count, 243);
+		lbl->Name = L"lblCup" + Convert::ToString(lbl_cups->Count);
+		lbl->Text = L"cup #" + Convert::ToString(lbl_cups->Count);
+
+		lbl->Click += gcnew System::EventHandler(this, &MainWin::selectCup);
+		this->Controls->Add(lbl);
+		lbl_cups->Add(lbl);
+	}
+	private: Void cleanLblCup() {
+		for each (Label ^ lbl in lbl_cups)
+		{
+			lbl->BorderStyle = System::Windows::Forms::BorderStyle::FixedSingle;
+			lbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 8,
+				System::Drawing::FontStyle::Regular, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(238)));
+			lbl->ForeColor = System::Drawing::Color::FromArgb(0, 0, 0);
+		}
+		delCupMenuItem->Enabled = false;
+		delCupMenuItem->Text = L"Usuñ kubek";
+		addSubMenuItem->Enabled = false;
+		addSubMenuItem->Text = L"Dodaj substancje";
+		subList->Visible = false;
+		subMI->Visible = false;
+		wlej->Visible = false;
+		anuluj->Visible = false;
+		cupID = -1;
+	}
+
+	private: Void getCupID(Label^ lbl) {
+		int count = lbl_cups->Count;
+		int _id = -1;
+		bool run = true;
+
+		while (run)
+		{
+			_id += 1;
+
+			if (lbl == lbl_cups[_id]) run = false;
+			else if ((_id + 1 == count) && (run == true))
+			{
+				_id = -1;
+				run = false;
+			}
+		}
+
+		cupID = _id;
+	}
+
+
+	private: Void add_substance_to_cup(int vol)
+	{
+		String^ selected = subList->SelectedItem->ToString();
+		std::string name = msclr::interop::marshal_as<std::string>(selected);
+
+		TCup* cup_pnt = cups_pnt[cupID];
+		cup_pnt->add(name, vol);
+		show_cup_info();
+	}
+
+	private : Void erase_cup_substances()
+	{
+		for each (Label ^ sub in lbl_subs)
+		{
+			if (sub && (Convert::ToInt16(sub->Tag) == cupID))
+			{
+				Controls->Remove(sub);
+				sub = nullptr;
+				delete sub;
+			}
+		}
+	}
+
+	private: Void show_cup_info()
+	{
+
+		TCup* cup_pnt = cups_pnt[cupID];
+		std::string info = cup_pnt->info(cupID);
+
+		String^ info_cli = gcnew String(info.c_str());
+		MessageBox::Show(info_cli, "Program kalkulator",
+			MessageBoxButtons::OK, MessageBoxIcon::Information);
+
+	}
+
+	private: Void fillSubList() {
+		subList->Items->Clear();
+		int count = substance_menu.size();
+
+		for (int i = 0; i < count; i++) {
+			std::string name = substance_menu[i].get_name();
+			String^ name_cli = gcnew String(name.c_str());
+			subList->Items->Add(name_cli);
+		}
+	}
+
+
+
+#pragma endregion
+	private: System::Void statystykaToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		Histogram^ hist = gcnew Histogram();
+		hist->Show();
+
+	}
+	private: System::Void zamknijToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		System::Windows::Forms::DialogResult answer;
+		answer = MessageBox::Show("Czy napewno chcesz zamkn¹æ aplikacjê?",
+			"Program kubeczki", MessageBoxButtons::YesNo, MessageBoxIcon::Question);
+
+		if (answer == System::Windows::Forms::DialogResult::Yes) {
+			Application::Exit();
+		}
+
+
+
+	}
+	private: System::Void oAutorzeToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+		OAutorze^ autor_info = gcnew OAutorze();
+		autor_info->Show();
+
+	}
+
+	private: System::Void dodajKubekToolStripMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		add_cup_gui();
+	}
+	private: Void add_cup_gui() {
+		addTCup();
+		addCup();
+		addLblCup();
+	}
+
+	private: System::Void selectCup(System::Object^ sender, System::EventArgs^ e)
+	{
+		select_cup_gui(sender);
+		
+	}
+
+	private: Void select_cup_gui(System::Object^ sender) {
+		if (add_substance_active == false)
+		{
+			cleanLblCup();
+			Label^ lbl = (Label^)sender;
+			lbl->BorderStyle = System::Windows::Forms::BorderStyle::Fixed3D;
+			lbl->Font = (gcnew System::Drawing::Font(L"Microsoft Sans Serif", 12,
+				System::Drawing::FontStyle::Bold, System::Drawing::GraphicsUnit::Point,
+				static_cast<System::Byte>(238)));
+			lbl->ForeColor = System::Drawing::Color::FromArgb(255, 0, 0);
+
+			getCupID(lbl);
+			delCupMenuItem->Enabled = true;
+			delCupMenuItem->Text = L"Usuñ kubek #" + Convert::ToString(cupID);
+			addSubMenuItem->Enabled = true;
+			addSubMenuItem->Text = L"Dodaj substancje do kubka #" +
+				Convert::ToString(cupID);
+		}
+	}
+
+	private: System::Void MainWin_Load(System::Object^ sender, System::EventArgs^ e) {
+
+	}
+	private: System::Void addSubMenuItem_Click(System::Object^ sender, System::EventArgs^ e) {
+	
+		add_sub_gui();
+	}
+
+	private: Void add_sub_gui() {
+		add_substance_active = true;
+		menuStrip1->Enabled = false;
+		fillSubList();
+
+		subMI->Size = System::Drawing::Size(199, 22);
+		subList->Size = System::Drawing::Size(199, 22);
+		subList->Location = System::Drawing::Point(12 + (10 + 199) * cupID,
+			273);
+		subMI->Location = System::Drawing::Point(12 + (10 + 199) * cupID,
+			302);
+		wlej->Location = System::Drawing::Point(12 + (10 + 199) * cupID, 330);
+		anuluj->Location = System::Drawing::Point(150 + (10 + 199) * cupID,
+			330);
+
+		subMI->Text = L"Wpisz iloœæ w [ml]";
+
+		subList->Visible = true;
+		subMI->Visible = true;
+		wlej->Visible = true;
+		anuluj->Visible = true;
+	}
+	private: System::Void MainWin_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+
+		subMI->Text = "";
+
+	}
+	private: System::Void MainWin_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+
+
+
+	}
+	private: System::Void subMI_KeyUp(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+
+		String^ text = subMI->Text;
+		try {
+			int num = Convert::ToInt32(text);
+
+			if (num <= 0) {
+				MessageBox::Show("WprowadŸ liczbê ca³kowit¹ dodatni¹", "Program kalkulator", MessageBoxButtons::OK,
+					MessageBoxIcon::Error);
+				subMI->Text = "";
+			}
+
+		}
+		catch (...) {
+			MessageBox::Show("WprowadŸ liczbê", "Program kalkulator",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+
+			if (text->Length > 0) subMI->Text = text->Substring(0, text->Length - 1);
+			else subMI->Text = "";
+		}
+
+
+
+	}
+	private: System::Void subMI_MouseDown(System::Object^ sender, System::Windows::Forms::MouseEventArgs^ e) {
+
+		subMI->Text = "";
+	}
+	private: Void draw_cup_substances()
+	{
+		TCup* cup_pnt = cups_pnt[cupID];
+		std::vector<TSubstance> subs = cup_pnt->get_cup_substances();
+		std::vector<double> vols = cup_pnt->get_cup_volumes();
+
+		int vol_in_cup = 0;
+
+		for (int i = 0; i < vols.size(); i++)
+		{
+			TSubstance sub = subs[i];
+			std::string name = sub.get_name();
+			int vol = vols[i] * 1e6;
+			std::vector<int> color_rgb = sub.get_color();
+			String^ name_cli = gcnew String(name.c_str());
+			name_cli += L": " + Convert::ToString(vol) + L"ml";
+
+			Label^ cup_substance = (gcnew
+				System::Windows::Forms::Label());
+			cup_substance->BorderStyle =
+				System::Windows::Forms::BorderStyle::FixedSingle;
+			cup_substance->TextAlign =
+				System::Drawing::ContentAlignment::MiddleCenter;
+
+			cup_substance->Size = System::Drawing::Size(199 - 12, vol);
+			cup_substance->Location = System::Drawing::Point(12 + 6 + (10 +
+				199) * cupID, 238 - vol_in_cup - vol);
+			cup_substance->Tag = Convert::ToString(cupID);
+			cup_substance->Text = name_cli;
+			cup_substance->BackColor = Color::FromArgb(color_rgb[0],
+				color_rgb[1], color_rgb[2]);
+			cup_substance->ForeColor = Color::FromArgb(255 - color_rgb[0],
+				255 - color_rgb[1], 255 - color_rgb[2]);
+
+			cup_substance->BringToFront();
+			this->Controls->Add(cup_substance);
+			lbl_subs->Add(cup_substance);
+			vol_in_cup += vol;
+		}
+
+		cups[cupID]->SendToBack();
+	}
+	
+	private: System::Void wlej_Click(System::Object^ sender, System::EventArgs^ e) {
+
+		String^ text = subMI->Text;
+		int vol = 0;
+		try {
+			int num = Convert::ToInt32(text);
+			int index = subList->SelectedIndex;
+
+			if (index >= 0) {
+				add_substance_to_cup(num);
+				erase_cup_substances();
+				draw_cup_substances();
+
+				cleanLblCup();
+				add_substance_active = false;
+				menuStrip1->Enabled = true;
+			}
+			else {
+				MessageBox::Show("Wybierz ciecz do dolania!",
+					"Program kalkulator", MessageBoxButtons::OK,
+					MessageBoxIcon::Error);
+			}
+		}
+		catch (...) {
+			MessageBox::Show("WprowadŸ liczbê", "Program kalkulator",
+				MessageBoxButtons::OK, MessageBoxIcon::Error);
+			subMI->Text = "";
+		}
+
+	}
+	private: System::Void anuluj_Click(System::Object ^ sender, System::EventArgs ^ e) {
+
+		cleanLblCup();
+		add_substance_active = false;
+		menuStrip1->Enabled = true;
+	}
+	private: System::Void MainWin_Click(System::Object ^ sender, System::EventArgs ^ e) {
+
+		if (add_substance_active == false) cleanLblCup();
+
+	}
+	private: System::Void MainWin_KeyDown(System::Object^ sender, System::Windows::Forms::KeyEventArgs^ e) {
+
+		if (e->KeyCode == Keys::Add)
+		{
+			if (cupID == -1) add_cup_gui();
+			else add_sub_gui();
+		}
+
+		if ((e->KeyCode >= Keys::D0) && (e->KeyCode <= Keys::D9))
+		{
+			int i = e->KeyValue - 48;
+
+			if (i < cups->Count)
+			{
+				Label^ cup_lbl = lbl_cups[i];
+				select_cup_gui(cup_lbl);
+			}
+		}
+
+
+	}
+};
+
+}
+
